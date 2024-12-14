@@ -1,0 +1,30 @@
+basePath: /v1
+info:
+  contact:
+    email: fiber@swagger.io
+    name: API Support
+  description: This is a config for Amethis API.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Amethis API
+  version: "1.0"
+paths:
+  /health:
+    get:
+      consumes:
+      - application/json
+      description: Health Check for the API
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Health Check API
+      tags:
+      - Health Check
+swagger: "2.0"

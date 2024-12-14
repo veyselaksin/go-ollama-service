@@ -1,0 +1,58 @@
+services:
+  database:
+    image: postgres:16.0
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+  api_service:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      target: development
+    container_name: api_service
+    command: "air"
+    environment:
+      - GO111MODULE=on
+      - AIR_ENV=dev
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+      - /app/tmp
+    ports:
+      - "8000:8000"
+    depends_on:
+      - database
+      - redis
+
+  ollama:
+    image: ollama/ollama:latest
+    volumes:
+      - ollama:/root/.ollama
+    restart: unless-stopped
+    container_name: ollama
+    pull_policy: always
+    tty: true
+    command: "serve & sleep 10 && ollama run qwen2:7b"
+    environment:
+      - OLLAMA_KEEP_ALIVE=24h
+      - OLLAMA_HOST=0.0.0.0
+
+volumes:
+  postgres-data:
+  redis-data:
+  ollama:

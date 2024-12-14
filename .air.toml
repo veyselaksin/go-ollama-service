@@ -1,0 +1,7 @@
+# .air.toml
+[build]
+cmd = "go build -o ./tmp/main ./cmd/main.go"
+bin = "./tmp/main"
+full_bin = "APP_ENV=dev ./tmp/main"
+include_dir = ["cmd", "internal", "pkg"]
+exclude_dir = ["vendor", "tmp"]
