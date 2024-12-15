@@ -1,43 +1,45 @@
 services:
   database:
     image: postgres:16.0
-    ports:
-      - "5432:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
     volumes:
       - postgres-data:/var/lib/postgresql/data
+    restart: unless-stopped
 
   redis:
     image: redis:alpine
     container_name: redis
-    ports:
-      - "6379:6379"
     volumes:
       - redis-data:/data
+    restart: unless-stopped
 
   api:
     build:
       context: ./
       dockerfile: Dockerfile
-      target: development
+      target: production
     container_name: api
-    command: "air"
-    environment:
-      - GO111MODULE=on
-      - AIR_ENV=dev
-    env_file:
-      - .env
-    volumes:
-      - .:/app
-      - /app/tmp
     ports:
       - "8000:8000"
+    env_file:
+      - .env
     depends_on:
       - database
       - redis
+    restart: unless-stopped
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+    restart: unless-stopped
 
   ollama:
     image: ollama/ollama:latest
@@ -51,6 +53,7 @@ services:
     environment:
       - OLLAMA_KEEP_ALIVE=24h
       - OLLAMA_HOST=0.0.0.0
+      - OLLAMA_DEBUG=false
 
 volumes:
   postgres-data:

@@ -25,8 +25,7 @@ func Health(ctx *fiber.Ctx) error {
 }
 
 func InitializeRouters(app *fiber.App, connection *gorm.DB, redis *redis.Client) {
-	api := app.Group("/api")
-	v1 := api.Group("/v1")
+	v1 := app.Group("/v1")
 
 	chatService := service.NewChatService(config.NewModelConfigs())
 
