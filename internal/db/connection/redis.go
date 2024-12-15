@@ -1,13 +1,14 @@
 package connection
 
 import (
+	"amethis-backend/internal/config"
 	"crypto/tls"
 	"fmt"
 
 	"github.com/redis/go-redis/v9"
 )
 
-func RedisConnection(config RedisConfig) *redis.Client {
+func RedisConnection(config config.RedisConfig) *redis.Client {
 
 	redisOptions := &redis.Options{
 		Addr:     fmt.Sprintf("%s:%s", config.Host, config.Port),

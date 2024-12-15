@@ -1,11 +1,10 @@
 package dto
 
-import "amethis-backend/pkg/ollama"
+import "amethis-backend/pkg/ai/ollama"
 
 type ChatRequest struct {
 	Model    string           `json:"model"`
 	Messages []ollama.Message `json:"messages"`
-	Stream   bool             `json:"stream"`
 }
 
 type ChatResponse struct {

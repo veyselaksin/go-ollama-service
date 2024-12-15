@@ -1,6 +1,7 @@
 package connection
 
 import (
+	"amethis-backend/internal/config"
 	"fmt"
 	"sync"
 
@@ -11,7 +12,7 @@ import (
 
 var once sync.Once
 
-func PostgresSQLConnection(config DatabaseConfig) *gorm.DB {
+func PostgresSQLConnection(config config.PostgresConfig) *gorm.DB {
 	dsn := fmt.Sprintf(
 		"host=%s user=%s password=%s dbname=%s port=%s application_name='%s' sslmode=%s timezone=%s",
 		config.Host,
