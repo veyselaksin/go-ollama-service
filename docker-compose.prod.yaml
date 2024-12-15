@@ -37,8 +37,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "443:443"
-    volumes:
-      - ./nginx/certs:/etc/nginx/certs
     depends_on:
       - api
     restart: unless-stopped
